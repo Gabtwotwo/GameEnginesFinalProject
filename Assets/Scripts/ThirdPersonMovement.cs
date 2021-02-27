@@ -32,6 +32,9 @@ public class ThirdPersonMovement : MonoBehaviour
     [SerializeField]
     private bool groundedPlayer;
 
+    //[SerializeField]
+    //private ParticleSystem poof;
+
 
     private Transform cameraMain;
     private int currentIndex;
@@ -85,11 +88,11 @@ public class ThirdPersonMovement : MonoBehaviour
 
         if(currentIndex == 1)
         {
-            playerSpeed = 5.0f;
+            playerSpeed = 10.0f;
         }
         else
         {
-            playerSpeed = 2.0f;
+            playerSpeed = 7.5f;
         }
 
         if (currentIndex == 2)
@@ -140,7 +143,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
         if (colorControl.action.triggered)
         {
-            
+
 
             //gameObject.GetComponentInChildren<Renderer>().material = colours[0];
             Debug.Log("Color Changed");
@@ -149,14 +152,29 @@ public class ThirdPersonMovement : MonoBehaviour
             {
                 case 0:
                     gameObject.GetComponentInChildren<Renderer>().material = colours[1];
+                    ParticleSystem poof = GetComponentInChildren<ParticleSystem>();
+                    ParticleSystem.EmitParams emitOverride = new ParticleSystem.EmitParams();
+                    emitOverride.startLifetime = 10f;
+                    poof.Emit(emitOverride, 20);
+
                     currentIndex = 1;
                     return;
                 case 1:
                     gameObject.GetComponentInChildren<Renderer>().material = colours[2];
+                    ParticleSystem poof2 = GetComponentInChildren<ParticleSystem>();
+                    ParticleSystem.EmitParams emitOverride2 = new ParticleSystem.EmitParams();
+                    emitOverride2.startLifetime = 10f;
+                    poof2.Emit(emitOverride2, 20);
+
                     currentIndex = 2;
                     return;
                 case 2:
                     gameObject.GetComponentInChildren<Renderer>().material = colours[0];
+                    ParticleSystem poof3 = GetComponentInChildren<ParticleSystem>();
+                    ParticleSystem.EmitParams emitOverride3 = new ParticleSystem.EmitParams();
+                    emitOverride3.startLifetime = 10f;
+                    poof3.Emit(emitOverride3, 20);
+
                     currentIndex = 0;
                     return;
 
