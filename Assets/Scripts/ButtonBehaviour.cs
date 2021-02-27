@@ -11,9 +11,24 @@ public class ButtonBehaviour : MonoBehaviour
         SceneManager.LoadScene("Game");
     }
 
+    public void onControlsButtonBehaviour()
+    {
+        SceneManager.LoadScene("Controls");
+    }
+
+    public void onCreditsButtonBehaviour()
+    {
+        SceneManager.LoadScene("Credits");
+    }
+
     public void onEndButtonBehaviour()
     {
         Application.Quit();
+    }
+
+    public void onBackButtonBehaviour()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
 

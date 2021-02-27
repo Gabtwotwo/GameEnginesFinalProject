@@ -36,6 +36,7 @@ public class ThirdPersonMovement : MonoBehaviour
     private Transform cameraMain;
     private int currentIndex;
     private Animator animator;
+    private bool usedDoubleJump;
 
 
 
@@ -82,6 +83,24 @@ public class ThirdPersonMovement : MonoBehaviour
     void Update()
     {
 
+        if(currentIndex == 1)
+        {
+            playerSpeed = 5.0f;
+        }
+        else
+        {
+            playerSpeed = 2.0f;
+        }
+
+        if (currentIndex == 2)
+        {
+            jumpHeight = 3.0f;
+        }
+        else
+        {
+            jumpHeight = 1.0f;
+        }
+
         playerVelocity.y += gravityValue * Time.deltaTime;
 
         if (groundedPlayer)
@@ -103,20 +122,47 @@ public class ThirdPersonMovement : MonoBehaviour
 
         // Changes the height position of the player..
         if (jumpControl.action.triggered && groundedPlayer)
-        {
-           
+        {          
               playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
                 
 
             
         }
 
+        if(jumpControl.action.triggered && !groundedPlayer && currentIndex == 0)
+        {
+            if (!usedDoubleJump)
+            {
+                playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+                usedDoubleJump = true;
+            }
+        }
+
         if (colorControl.action.triggered)
         {
             
 
-            gameObject.GetComponentInChildren<Renderer>().material = colours[0];
+            //gameObject.GetComponentInChildren<Renderer>().material = colours[0];
             Debug.Log("Color Changed");
+
+            switch (currentIndex)
+            {
+                case 0:
+                    gameObject.GetComponentInChildren<Renderer>().material = colours[1];
+                    currentIndex = 1;
+                    return;
+                case 1:
+                    gameObject.GetComponentInChildren<Renderer>().material = colours[2];
+                    currentIndex = 2;
+                    return;
+                case 2:
+                    gameObject.GetComponentInChildren<Renderer>().material = colours[0];
+                    currentIndex = 0;
+                    return;
+
+
+            }
+
         }
 
  
@@ -128,6 +174,11 @@ public class ThirdPersonMovement : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(0.0f, targetAngle, 0.0f);
             transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
             animator.SetInteger("animState", 1);
+            if(currentIndex == 1)
+            {
+                animator.SetInteger("animState", 3);
+
+            }
         }
         else
         {
@@ -141,13 +192,9 @@ public class ThirdPersonMovement : MonoBehaviour
             animator.SetInteger("animState", 2);
         }
 
-        if (shootControl.action.triggered)
+        if(usedDoubleJump == true && groundedPlayer)
         {
-
-                GameObject.Instantiate(bulletRef, transform.position, Quaternion.Euler(0.0f, Camera.main.transform.rotation.y, 0.0f));
-            
-
-
+            usedDoubleJump = false;
         }
 
         groundedPlayer = controller.isGrounded;
