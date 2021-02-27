@@ -12,6 +12,10 @@ public class ThirdPersonMovement : MonoBehaviour
     [SerializeField]
     private InputActionReference colorControl;
     [SerializeField]
+    private InputActionReference shootControl;
+    [SerializeField]
+    private InputActionReference mousePosControl;
+    [SerializeField]
     private float playerSpeed = 2.0f;
     [SerializeField]
     private float jumpHeight = 0.1f;
@@ -38,12 +42,19 @@ public class ThirdPersonMovement : MonoBehaviour
     [SerializeField]
     public Material[] colours;
 
+    public GameObject bulletRef;
+    public Camera characterCamera;
+    public Vector3 clickPosition;
+
 
     private void OnEnable()
     {
         movementControl.action.Enable();
         jumpControl.action.Enable();
         colorControl.action.Enable();
+        shootControl.action.Enable();
+        mousePosControl.action.Enable();
+
 
 
 
@@ -54,6 +65,9 @@ public class ThirdPersonMovement : MonoBehaviour
         movementControl.action.Disable();
         jumpControl.action.Disable();
         colorControl.action.Disable();
+        shootControl.action.Disable();
+        mousePosControl.action.Disable();
+
 
     }
 
@@ -126,7 +140,15 @@ public class ThirdPersonMovement : MonoBehaviour
         {
             animator.SetInteger("animState", 2);
         }
- 
+
+        if (shootControl.action.triggered)
+        {
+
+                GameObject.Instantiate(bulletRef, transform.position, Quaternion.Euler(0.0f, Camera.main.transform.rotation.y, 0.0f));
+            
+
+
+        }
 
         groundedPlayer = controller.isGrounded;
 
