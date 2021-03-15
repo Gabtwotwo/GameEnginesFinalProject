@@ -32,6 +32,9 @@ public class ThirdPersonMovement : MonoBehaviour
     [SerializeField]
     private bool groundedPlayer;
 
+    [Header("Parenting")]
+    public Transform parent;
+
     //[SerializeField]
     //private ParticleSystem poof;
 
@@ -218,5 +221,22 @@ public class ThirdPersonMovement : MonoBehaviour
         groundedPlayer = controller.isGrounded;
 
 
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Platform"))
+        {
+            Debug.Log("Collided");
+            transform.SetParent(other.gameObject.transform);
+        }
+    }
+
+    private void OnCollisionExit(Collision other)
+    {
+        if (other.gameObject.CompareTag("Platform"))
+        {
+            transform.SetParent(parent);
+        }
     }
 }
