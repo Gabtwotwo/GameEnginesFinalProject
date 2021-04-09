@@ -223,20 +223,5 @@ public class ThirdPersonMovement : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.CompareTag("Platform"))
-        {
-            Debug.Log("Collided");
-            transform.SetParent(other.gameObject.transform);
-        }
-    }
 
-    private void OnCollisionExit(Collision other)
-    {
-        if (other.gameObject.CompareTag("Platform"))
-        {
-            transform.SetParent(parent);
-        }
-    }
 }
